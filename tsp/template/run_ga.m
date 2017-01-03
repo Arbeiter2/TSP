@@ -69,8 +69,9 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         	FitnV=ranking(ObjV);
         	%select individuals for breeding
         	SelCh=select(SEL_F, Chrom, FitnV, GGAP);
+            
         	%recombine individuals (crossover)
-            SelCh = recombin(CROSSOVER,SelCh,PR_CROSS);
+            SelCh = recombin(CROSSOVER,SelCh,PR_CROSS, 1, Dist);
 
             % mutate part of selected population
             SelCh=mutateTSP('inversion',SelCh,PR_MUT, PATH_REP);

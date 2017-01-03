@@ -18,6 +18,7 @@
 %                if omitted or NaN, 1 is assumed
 %    SUBPOP    - (optional) Number of subpopulations
 %                if omitted or NaN, 1 subpopulation is assumed
+%    Dist      - (optional) Matrix of costs
 %
 % Output parameter:
 %    NewChrom  - Matrix containing the chromosomes of the population
@@ -27,7 +28,7 @@
 %  History:   18.03.94     file created
 
 
-function NewChrom = recombin(REC_F, Chrom, RecOpt, SUBPOP);
+function NewChrom = recombin(REC_F, Chrom, RecOpt, SUBPOP, Dist);
 
 
 % Check parameter consistency
@@ -58,6 +59,8 @@ function NewChrom = recombin(REC_F, Chrom, RecOpt, SUBPOP);
    % number of cities as the number of crossover points
    if strcmp(REC_F, 'xovmp')
       XovPts = ceil(sqrt(size(Chrom,2)));
+   elseif strcmp(REC_F, 'xovscx') && nargin < 5
+      error('For CROSSOVER=xovscx, matrix Dist must be passed');
    end
 
 % Select individuals of one subpopulation and call low level function
@@ -66,6 +69,8 @@ function NewChrom = recombin(REC_F, Chrom, RecOpt, SUBPOP);
       ChromSub = Chrom((irun-1)*Nind+1:irun*Nind,:);  
       if strcmp(REC_F, 'xovmp')
         NewChromSub = feval(REC_F, ChromSub, RecOpt, XovPts);
+      elseif strcmp(REC_F, 'xovscx')
+        NewChromSub = feval(REC_F, ChromSub, RecOpt, Dist);
       else
         NewChromSub = feval(REC_F, ChromSub, RecOpt);
       end
