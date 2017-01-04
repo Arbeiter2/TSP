@@ -15,6 +15,7 @@ LOCALLOOP=0;      % local loop removal
 SEL_F = 'sus';
 DATASET_NAME = 'unused';
 CROSSOVER = 'xalt_edges';   % default blank
+MUTATION_OP = 'inversion';
 PATH_REP = 1; % tour encoding
 RUNCOUNT = 1;
 %	1 : adjacency representation
@@ -96,10 +97,10 @@ xlabel('Distance');
 ylabel('Number');
 
 ph = uipanel('Parent',fh,'Title','Settings','Position',[.55 .05 .45 .45]);
-datasetpopuptxt = uicontrol(ph,'Style','text','String','Dataset','Position',[0 260 130 20]);
-datasetpopup = uicontrol(ph,'Style','popupmenu','String',datasets,'Value',1,'Position',[130 260 130 20],'Callback',@datasetpopup_Callback);
-llooppopuptxt = uicontrol(ph,'Style','text','String','Loop Detection','Position',[260 260 130 20]);
-llooppopup = uicontrol(ph,'Style','popupmenu','String',{'off','on'},'Value',1,'Position',[390 260 50 20],'Callback',@llooppopup_Callback); 
+datasetpopuptxt = uicontrol(ph,'Style','text','String','Dataset','Position',[0 290 130 20]);
+datasetpopup = uicontrol(ph,'Style','popupmenu','String',datasets,'Value',1,'Position',[130 290 130 20],'Callback',@datasetpopup_Callback);
+llooppopuptxt = uicontrol(ph,'Style','text','String','Loop Detection','Position',[260 290 130 20]);
+llooppopup = uicontrol(ph,'Style','popupmenu','String',{'off','on'},'Value',1,'Position',[390 290 50 20],'Callback',@llooppopup_Callback); 
 ncitiesslidertxt = uicontrol(ph,'Style','text','String','# Cities','Position',[0 230 130 20]);
 %ncitiesslider = uicontrol(ph,'Style','slider','Max',128,'Min',4,'Value',NVAR,'Sliderstep',[0.012 0.05],'Position',[130 230 150 20],'Callback',@ncitiesslider_Callback);
 ncitiessliderv = uicontrol(ph,'Style','text','String',NVAR,'Position',[280 230 50 20]);
@@ -124,6 +125,9 @@ crossover = uicontrol(ph,'Style','popupmenu', 'String',{'xalt_edges','xovsp','xo
 runcountslidertxt = uicontrol(ph,'Style','text','String','Run Count','Position',[0 20 130 20]);
 runcountslider = uicontrol(ph,'Style','slider','Max',100,'Min',1,'Value',RUNCOUNT,'Sliderstep',[0.01 0.05],'Position',[130 20 150 20],'Callback',@runcount_Callback);
 runcountsliderv = uicontrol(ph,'Style','text','String',RUNCOUNT,'Position',[280 20 50 20]);
+
+mutationtxt = uicontrol(ph,'Style','text','String','Mutation op','Position',[20 260 90 20]);
+mutation= uicontrol(ph,'Style','popupmenu', 'Value',1,'String',{'inversion','inversion2'}, 'Value',1,'Position',[130 260 80 20],'Callback',@mutation_Callback);
 
 runbutton = uicontrol(ph,'Style','pushbutton','String','START','Position',[310 50 50 30],'Callback',@runbutton_Callback);
 
@@ -180,6 +184,12 @@ set(fh,'Visible','on');
         set(mutsliderv,'String',slider_value);
         PR_MUT = round(slider_value)/100;
     end
+    function mutation_Callback(hObject,eventdata)
+        mutation_value = get(hObject,'Value');
+        mutation_ops = get(hObject,'String');
+        MUTATION_OP = mutation_ops(mutation_value);
+        MUTATION_OP = MUTATION_OP{1};
+    end
     function crossslider_Callback(hObject,eventdata)
         fslider_value = get(hObject,'Value');
         slider_value = round(fslider_value);
@@ -222,11 +232,11 @@ set(fh,'Visible','on');
         elseif strcmp(CROSSOVER, 'xalt_edges')
             CROSSOVER = 'xovmp';  % classic single-point crossover
         end
-        [pathstr,name,ext] = fileparts(DATASET_NAME)
+        [pathstr,name,ext] = fileparts(DATASET_NAME);
         filename = strcat(name, ext);
 
         for run=1:RUNCOUNT
-            run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, filename);
+            run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, filename);
             end_run();
         end
     end

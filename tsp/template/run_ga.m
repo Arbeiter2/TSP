@@ -1,4 +1,4 @@
-function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, datafile)
+function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, datafile)
 % usage: run_ga(x, y, 
 %               NIND, MAXGEN, NVAR, 
 %               ELITIST, STOP_PERCENTAGE, 
@@ -13,6 +13,7 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
 % STOP_PERCENTAGE: percentage of equal fitness (stop criterium)
 % PR_CROSS: probability for crossover
 % PR_MUT: probability for mutation
+% MUTATION_OP: mutation operator
 % CROSSOVER: the crossover operator
 % calculate distance matrix between each pair of cities
 % ah1, ah2, ah3: axes handles to visualise tsp
@@ -46,6 +47,7 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         ObjV = tspfun(Chrom,Dist,PATH_REP);
         best=zeros(1,MAXGEN);
         bestPathIndex = 0;
+        objRange = 0;
         % generational loop
         while gen<MAXGEN
             sObjV=sort(ObjV);
@@ -62,7 +64,8 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
             
             visualizeTSP(x,y,Paths(t,:), minimum, ah1, gen, best, mean_fits, worst, ah2, ObjV, NIND, ah3);
 
-            if (sObjV(stopN)-sObjV(1) <= 1e-15)
+            objRange = sObjV(stopN)-sObjV(1);
+            if (objRange <= 1e-15)
                   break;
             end          
         	%assign fitness values to entire population
@@ -74,7 +77,7 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
             SelCh = recombin(CROSSOVER,SelCh,PR_CROSS, 1, Dist);
 
             % mutate part of selected population
-            SelCh=mutateTSP('inversion',SelCh,PR_MUT, PATH_REP);
+            SelCh=mutateTSP(MUTATION_OP, SelCh,PR_MUT, PATH_REP);
             
             %evaluate offspring, call objective function
         	ObjVSel = tspfun(SelCh,Dist,PATH_REP);
