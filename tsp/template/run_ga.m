@@ -48,12 +48,18 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         best=zeros(1,MAXGEN);
         bestPathIndex = 0;
         objRange = 0;
+        old_mean = 0;
         % generational loop
         while gen<MAXGEN
             sObjV=sort(ObjV);
           	best(gen+1)=min(ObjV);
         	minimum=best(gen+1);
             mean_fits(gen+1)=mean(ObjV);
+
+            if abs(old_mean - mean_fits(gen+1)) < 1e-15
+                break;
+            end
+            
             worst(gen+1)=max(ObjV);
             for t=1:size(ObjV,1)
                 if (ObjV(t)==minimum)
@@ -68,7 +74,8 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
             if (objRange <= 1e-15)
                   break;
             end          
-        	%assign fitness values to entire population
+            old_mean = mean_fits(gen+1);
+            %assign fitness values to entire population
         	FitnV=ranking(ObjV);
         	%select individuals for breeding
         	SelCh=select(SEL_F, Chrom, FitnV, GGAP);
@@ -91,5 +98,5 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         end
         %Chrom(bestPathIndex, :)
         %Paths(bestPathIndex, :)
-        {datafile NIND MAXGEN NVAR ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT LOCALLOOP CROSSOVER PATH_REP minimum gen}
+        {datafile NIND MAXGEN NVAR ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT LOCALLOOP CROSSOVER PATH_REP minimum gen MUTATION_OP}
 end

@@ -98,9 +98,14 @@ ylabel('Number');
 
 ph = uipanel('Parent',fh,'Title','Settings','Position',[.55 .05 .45 .45]);
 datasetpopuptxt = uicontrol(ph,'Style','text','String','Dataset','Position',[0 290 130 20]);
-datasetpopup = uicontrol(ph,'Style','popupmenu','String',datasets,'Value',1,'Position',[130 290 130 20],'Callback',@datasetpopup_Callback);
-llooppopuptxt = uicontrol(ph,'Style','text','String','Loop Detection','Position',[260 290 130 20]);
-llooppopup = uicontrol(ph,'Style','popupmenu','String',{'off','on'},'Value',1,'Position',[390 290 50 20],'Callback',@llooppopup_Callback); 
+datasetpopup = uicontrol(ph,'Style','popupmenu','String',datasets,'Value',1,'Position',[130 290 230 20],'Callback',@datasetpopup_Callback);
+
+llooppopuptxt = uicontrol(ph,'Style','text','String','Loop Detection','Position',[260 260 130 20]);
+llooppopup = uicontrol(ph,'Style','popupmenu','String',{'off','on'},'Value',1,'Position',[390 260 50 20],'Callback',@llooppopup_Callback); 
+
+mutationtxt = uicontrol(ph,'Style','text','String','Mutation op','Position',[20 260 90 20]);
+mutation= uicontrol(ph,'Style','popupmenu', 'Value',1,'String',{'inversion','inversion2'}, 'Value',1,'Position',[130 260 100 20],'Callback',@mutation_Callback);
+
 ncitiesslidertxt = uicontrol(ph,'Style','text','String','# Cities','Position',[0 230 130 20]);
 %ncitiesslider = uicontrol(ph,'Style','slider','Max',128,'Min',4,'Value',NVAR,'Sliderstep',[0.012 0.05],'Position',[130 230 150 20],'Callback',@ncitiesslider_Callback);
 ncitiessliderv = uicontrol(ph,'Style','text','String',NVAR,'Position',[280 230 50 20]);
@@ -125,9 +130,6 @@ crossover = uicontrol(ph,'Style','popupmenu', 'String',{'xalt_edges','xovsp','xo
 runcountslidertxt = uicontrol(ph,'Style','text','String','Run Count','Position',[0 20 130 20]);
 runcountslider = uicontrol(ph,'Style','slider','Max',100,'Min',1,'Value',RUNCOUNT,'Sliderstep',[0.01 0.05],'Position',[130 20 150 20],'Callback',@runcount_Callback);
 runcountsliderv = uicontrol(ph,'Style','text','String',RUNCOUNT,'Position',[280 20 50 20]);
-
-mutationtxt = uicontrol(ph,'Style','text','String','Mutation op','Position',[20 260 90 20]);
-mutation= uicontrol(ph,'Style','popupmenu', 'Value',1,'String',{'inversion','inversion2'}, 'Value',1,'Position',[130 260 80 20],'Callback',@mutation_Callback);
 
 runbutton = uicontrol(ph,'Style','pushbutton','String','START','Position',[310 50 50 30],'Callback',@runbutton_Callback);
 
