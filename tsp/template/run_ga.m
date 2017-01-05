@@ -98,5 +98,5 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         end
         %Chrom(bestPathIndex, :)
         %Paths(bestPathIndex, :)
-        {datafile NIND MAXGEN NVAR ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT LOCALLOOP CROSSOVER PATH_REP minimum gen MUTATION_OP}
+        {datafile NIND MAXGEN NVAR ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT LOCALLOOP CROSSOVER PATH_REP minimum gen MUTATION_OP SEL_F}
 end
