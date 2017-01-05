@@ -4,7 +4,7 @@ function ChrIx = tourn(Fitness, Count, KVal);
 
 len = size(Fitness, 1);
 if nargin < 3 || isnan(KVal)
-    KVal = 2;
+    KVal = max(ceil(sqrt(len)), 2);
 end
 ChrIx = zeros(Count, 1);
 
