@@ -1,4 +1,4 @@
-function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, datafile)
+function [gen, minimum] = run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, datafile)
 % usage: run_ga(x, y, 
 %               NIND, MAXGEN, NVAR, 
 %               ELITIST, STOP_PERCENTAGE, 
@@ -56,7 +56,7 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         	minimum=best(gen+1);
             mean_fits(gen+1)=mean(ObjV);
 
-            if abs(old_mean - mean_fits(gen+1)) < 1e-15
+            if gen > 0 && abs(old_mean - mean_fits(gen+1)) < 1e-5
                 break;
             end
             

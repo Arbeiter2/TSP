@@ -12,7 +12,7 @@ STOP_PERCENTAGE=.95;    % percentage of equal fitness individuals for stopping
 PR_CROSS=.95;     % probability of crossover
 PR_MUT=.05;       % probability of mutation
 LOCALLOOP=0;      % local loop removal
-SEL_F = 'tourn';
+SEL_F = 'sus';
 DATASET_NAME = 'unused';
 CROSSOVER = 'xalt_edges';   % default blank
 MUTATION_OP = 'inversion';
@@ -238,9 +238,16 @@ set(fh,'Visible','on');
         filename = strcat(name, ext);
 
         for run=1:RUNCOUNT
-            run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, filename);
-            end_run();
+            [gen, minimum] = run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, MUTATION_OP, CROSSOVER, LOCALLOOP, ah1, ah2, ah3, SEL_F, PATH_REP, filename);
+            end_run(gen);
         end
+        [pathstr,name,ext] = fileparts(DATASET_NAME);
+        
+        tail = strjoin({num2str(NIND), num2str(MAXGEN), num2str(gen), MUTATION_OP, CROSSOVER, strcat('mut', num2str(100 * PR_MUT), 'pc')}, '-');
+
+        export_fig(ah1, strcat('../images/', name, '-tour-', tail, '.png'));
+        export_fig(ah2, strcat('../images/', name, '-evolution-', tail, '.png'));
+        export_fig(ah3, strcat('../images/', name, '-histogram-', tail, '.png'));        
     end
     function representation_Callback(hObject,eventdata)
         rep_value = get(hObject,'Value');
@@ -252,7 +259,7 @@ set(fh,'Visible','on');
         axes(ah1);
         plot(x,y,'ko')
     end
-    function end_run()
+    function end_run(gen)
         %set(ncitiesslider,'Visible','on');
         set(nindslider,'Visible','on');
         set(genslider,'Visible','on');
