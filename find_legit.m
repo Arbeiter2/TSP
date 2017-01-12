@@ -1,8 +1,12 @@
 %
 % find index of first legitimate node in unvisited list
 %
+% Used as a helper functin for xovscx_inner
 %
-
+% Path: parent tour
+% After: node to follow in tour
+% Visited: list of visited nodes
+%
 function Index = find_legit(Path, After, Visited)
 
 len = size(Path,2);
@@ -22,4 +26,5 @@ while Visited(Path(Index)) == 1
         Index = 1;
     end
 end
+
 % end function

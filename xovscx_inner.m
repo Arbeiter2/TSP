@@ -13,13 +13,13 @@
 % 'node p’ is present in any of the parent, search sequentially the nodes 
 % {2, 3, …, n} and consider the first 'legitimate' node, and go to Step 3.
 % 
-% Step 3: Suppose the 'node ?' and the 'node ?' are found in 1st and 2nd 
+% Step 3: Suppose the 'node a' and the 'node b' are found in 1st and 2nd 
 % parent respectively, then for selecting the next node go to Step 4.
 % 
-% Step 4: If cp? < cp?, then select 'node ?', otherwise, 'node ?' as the 
-% next node and concatenate it to the partially constructed offspring 
-% chromosome. If the offspring is a complete chromosome, then stop, 
-% otherwise, rename the present node as 'node p' and go to Step 2.
+% Step 4: If cost(p,a)? < cost(p,b), then select 'node a', otherwise, 
+% 'node b' as the next node and concatenate it to partially constructed 
+% offspring chromosome. If the offspring is a complete chromosome, then 
+% stop, otherwise, rename the present node as 'node p' and go to Step 2.
 %
 % Parent1: parent tour of length n (row vector path representation)
 % Parent2: parent tour of length n (row vector path representation)
